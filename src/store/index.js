@@ -1,2 +1,3 @@
 import { combineReducers } from "redux";
-export default combineReducers({});
+import SettingsStore from "./Settings.store";
+export default combineReducers({ SettingsStore });
