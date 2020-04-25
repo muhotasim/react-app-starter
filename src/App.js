@@ -7,18 +7,7 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <label>Test d a</label>
-        <input
-          onChange={(e) => {
-            this.setState({ title: e.target.value });
-          }}
-          value={this.state.title}
-        />
-        <h1>Hello world dasdadasd </h1>
-      </div>
-    );
+    return <div></div>;
   }
 }
 
