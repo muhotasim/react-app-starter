@@ -1,11 +1,11 @@
-import React from "react";
-import { render } from "react-dom";
-import App from "./App";
-import ErrorBoundery from "./ErrorBoundery";
-import { createStore, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
-import rootStore from "./store";
-import thunk from "redux-thunk";
+import React from 'react';
+import { render } from 'react-dom';
+import App from './components/App';
+import ErrorBoundery from './ErrorBoundery';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import rootStore from './store';
+import thunk from 'redux-thunk';
 const store = createStore(rootStore, applyMiddleware(thunk));
 render(
   <ErrorBoundery>
@@ -13,5 +13,5 @@ render(
       <App />
     </Provider>
   </ErrorBoundery>,
-  document.getElementById("app")
+  document.getElementById('app')
 );
