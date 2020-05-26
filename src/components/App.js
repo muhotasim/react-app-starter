@@ -8,7 +8,8 @@ import Login from './general/Login';
 import Users from './pages/Users';
 import Settings from './pages/Settings';
 import UserCreate from './pages/Users/UserCreate';
-import ApiGenerator from './pages/ApiGenerator';
+import Modules from './pages/Modules';
+import CreateModule from './pages/Modules/CreateModule';
 
 // end pages
 import menu from '../constents/menu';
@@ -40,7 +41,8 @@ class App extends React.Component {
               <Route exact component={Users} path="/Users" />
               <Route exact component={Settings} path="/Settings" />
               <Route exact component={UserCreate} path="/UserCreate" />
-              <Route exact component={ApiGenerator} path="/ApiGenerator" />
+              <Route exact component={Modules} path="/Modules" />
+              <Route exact component={CreateModule} path="/CreateModule" />
             </div>
           </div>
         </Switch>

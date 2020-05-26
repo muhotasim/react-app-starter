@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from '../../general/Common.Comp';
 import Input from '../../general/Input';
-
+import { Redirect } from 'react-router-dom';
 export default class UserCreate extends React.Component {
   constructor(props) {
     super(props);
@@ -14,12 +14,16 @@ export default class UserCreate extends React.Component {
       confirmPassword: '',
       isActive: '',
       token: '',
+      redirectBack: false,
     };
-    ['onChange'].forEach((fn) => {
+    ['onChange', '_onSaveUser'].forEach((fn) => {
       this[fn] = this[fn].bind(this);
     });
   }
 
+  _onSaveUser() {
+    this.setState({ redirectBack: true });
+  }
   onChange(v, k) {
     this.setState({ [k]: v });
   }
@@ -32,7 +36,12 @@ export default class UserCreate extends React.Component {
       password,
       confirmPassword,
       isAdmin,
+      redirectBack,
     } = this.state;
+
+    if (redirectBack) {
+      return <Redirect to="/Users" />;
+    }
     return (
       <div className="page">
         <Header title="Create User" />
@@ -95,7 +104,10 @@ export default class UserCreate extends React.Component {
           </div>
 
           <div>
-            <button className="btn btn-project-default float-right btn-md">
+            <button
+              className="btn btn-project-default float-right btn-md"
+              onClick={this._onSaveUser}
+            >
               Submit
             </button>
             <p className="clearfix"></p>

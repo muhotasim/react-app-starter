@@ -21,8 +21,19 @@ export default [
     ],
   },
   {
-    label: 'Api Generator',
-    link: 'ApiGenerator',
-    menus: [],
+    label: 'Modules',
+    link: '',
+    menus: [
+      {
+        label: 'Modules',
+        link: 'Modules',
+        menus: [],
+      },
+      {
+        label: 'Create Module',
+        link: 'CreateModule',
+        menus: [],
+      },
+    ],
   },
 ];

@@ -4,7 +4,13 @@ import ApiList from './ApiList';
 import './index.css';
 import Input from '../../general/Input';
 import Filter from './Filter';
-export default class ApiGenerator extends React.Component {
+import Datatable from '../../general/Datatable';
+const columns = [
+  { label: 'Title', column: 'id', type: 'data' },
+  { label: 'Content', column: 'name', type: 'data' },
+];
+
+export default class Modules extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,11 +20,17 @@ export default class ApiGenerator extends React.Component {
       filterOptions: [],
       filterItems: [],
     };
-    ['_onChange', '_addMoreFilter', '_removeFilter'].forEach(
-      (fn) => (this[fn] = this[fn].bind(this))
-    );
+    [
+      '_onChange',
+      '_addMoreFilter',
+      '_removeFilter',
+      '_onParamsChange',
+      '_getAndProcessData',
+    ].forEach((fn) => (this[fn] = this[fn].bind(this)));
   }
-
+  _onParamsChange(data, id) {
+    console.log(data, id);
+  }
   _onChange(v, k) {
     this.setState({ [k]: v });
   }
@@ -36,6 +48,25 @@ export default class ApiGenerator extends React.Component {
     filters.splice(index, 1);
     this.setState({ filterItems: filters });
   }
+  componentDidMount() {}
+
+  _getAndProcessData() {
+    this.Datatable._processTableData([
+      { id: 4, name: 'fuad 4' },
+      { id: 5, name: 'fuad 5' },
+      { id: 6, name: 'fuad 6' },
+      { id: 4, name: 'fuad 4' },
+      { id: 5, name: 'fuad 5' },
+      { id: 6, name: 'fuad 6' },
+      { id: 4, name: 'fuad 4' },
+      { id: 5, name: 'fuad 5' },
+      { id: 6, name: 'fuad 6' },
+      { id: 6, name: 'fuad 6' },
+      { id: 4, name: 'fuad 4' },
+      { id: 5, name: 'fuad 5' },
+      { id: 6, name: 'fuad 6' },
+    ]);
+  }
   render() {
     const {
       searchModule,
@@ -46,7 +77,7 @@ export default class ApiGenerator extends React.Component {
     } = this.state;
     return (
       <div className="page">
-        <Header title="Api Generator" />
+        <Header title="Modules " />
         <div className="row">
           <div className="col-md-3">
             <Input
@@ -55,6 +86,7 @@ export default class ApiGenerator extends React.Component {
               value={searchModule}
               onChange={(v) => {
                 this._onChange(v, 'searchModule');
+                this._getAndProcessData();
               }}
             />
             <ApiList
@@ -73,14 +105,24 @@ export default class ApiGenerator extends React.Component {
           </div>
           <div className="col-md-9">
             {slmodule && (
-              <Filter
-                moduleName={slmodule.label}
-                selectedFilters={selectedFilters}
-                filterOptions={filterOptions}
-                filterItems={filterItems}
-                addFilter={this._addMoreFilter}
-                removeFilter={this._removeFilter}
-              />
+              <div>
+                <Filter
+                  moduleName={slmodule.label}
+                  selectedFilters={selectedFilters}
+                  filterOptions={filterOptions}
+                  filterItems={filterItems}
+                  addFilter={this._addMoreFilter}
+                  removeFilter={this._removeFilter}
+                />
+                <Datatable
+                  ref={(elm) => {
+                    this.Datatable = elm;
+                  }}
+                  columns={columns}
+                  onParamsChange={this._onParamsChange}
+                  totalPage={1}
+                />
+              </div>
             )}
           </div>
         </div>
