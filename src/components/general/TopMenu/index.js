@@ -21,7 +21,7 @@ class TopMenu extends React.Component {
     const { brandName, showBrand, menus } = this.props;
     return (
       <Fragment>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark-blue">
           {this.props.showBrand && (
             <a className="navbar-brand" href="#">
               {this.props.brandName}
@@ -45,12 +45,12 @@ class TopMenu extends React.Component {
                     );
                   } else {
                     return (
-                      <li className="nav-item dropdown" key={index}>
+                      <li className="nav-item dropdown " key={index}>
                         <a
                           className="nav-link dropdown-toggle"
                           onClick={(e) => {
                             let dropDown = e.target.parentNode.querySelector(
-                              '.dropdown-menu'
+                              '.dropdown-menu '
                             );
                             if (
                               dropDown.style.display == '' ||
@@ -61,11 +61,10 @@ class TopMenu extends React.Component {
                               dropDown.style.display = 'none';
                             }
                           }}
-                          href="#"
                         >
                           {menu.label}
                         </a>
-                        <div className="dropdown-menu">
+                        <div className="dropdown-menu bg-dark-blue">
                           {menu.menus.map((submenu, subIndex) => {
                             return (
                               <Link

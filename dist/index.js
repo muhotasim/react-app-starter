@@ -22,6 +22,10 @@ const developemt = false;
   let stylesheets = [
     // add your css here
     './content/css/bootstrap.min.css',
+    './content/css/initial.css',
+    './content/fonts/font.css',
+    './content/css/react-toggle.css',
+    './content/css/project.css',
   ];
   stylesheets.forEach((href) => {
     let link = document.createElement('link');

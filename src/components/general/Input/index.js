@@ -2,13 +2,8 @@ import React from 'react';
 import fmGroup from '../../../constents/cssConstents';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-const uuid = () => {
-  return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-};
+import { uuid } from '../Common.Comp';
+import Toggle from 'react-toggle';
 const Label = (props) => {
   return props.label ? <label>{props.label}</label> : null;
 };
@@ -21,11 +16,12 @@ const Input = (props) => {
       return (
         <div
           className={
-            fmGroup.fmGroup + props.error
+            fmGroup.fmGroup +
+            (props.error
               ? fmGroup.hasError
               : '' + props.success
               ? fmGroup.hasSuccess
-              : ''
+              : '')
           }
         >
           <Label label={props.label} />
@@ -42,16 +38,81 @@ const Input = (props) => {
         </div>
       );
       break;
+    case 'toggle':
+      return (
+        <Toggle
+          value={props.value}
+          onChange={(v) => {
+            props.onChange(v);
+          }}
+        />
+      );
+      break;
+    case 'password':
+      return (
+        <div
+          className={
+            fmGroup.fmGroup +
+            (props.error
+              ? fmGroup.hasError
+              : '' + props.success
+              ? fmGroup.hasSuccess
+              : '')
+          }
+        >
+          <Label label={props.label} />
+          <input
+            type={props.type}
+            className={fmGroup.fmControl}
+            value={props.value}
+            disabled={props.disabled}
+            readOnly={props.readonly}
+            onChange={(e) => {
+              props.onChange(e.target.value);
+            }}
+          />
+        </div>
+      );
+      break;
+    case 'textarea':
+      return (
+        <div
+          className={
+            fmGroup.fmGroup +
+            (props.error
+              ? fmGroup.hasError
+              : '' + props.success
+              ? fmGroup.hasSuccess
+              : '')
+          }
+        >
+          <Label label={props.label} />
+          <textarea
+            rows={5 || props.rows}
+            type={props.type}
+            className={fmGroup.fmControl}
+            value={props.value}
+            disabled={props.disabled}
+            readOnly={props.readonly}
+            onChange={(e) => {
+              props.onChange(e.target.value);
+            }}
+          />
+        </div>
+      );
+      break;
+
     case 'checkbox':
       if (props.isMulti) {
         return (
           <div
             className={
-              fmGroup.fmGroup + props.error
+              fmGroup.fmGroup +
+              (props.error
                 ? fmGroup.hasError
                 : '' + props.success
                 ? fmGroup.hasSuccess
-                : ''
+                : '')
             }
           >
             {props.options.map((option, index) => {
@@ -93,11 +154,12 @@ const Input = (props) => {
         return (
           <div
             className={
-              fmGroup.fmGroup + props.error
+              fmGroup.fmGroup +
+              (props.error
                 ? fmGroup.hasError
                 : '' + props.success
                 ? fmGroup.hasSuccess
-                : ''
+                : '')
             }
           >
             <label>
@@ -122,11 +184,12 @@ const Input = (props) => {
       return (
         <div
           className={
-            fmGroup.fmGroup + props.error
+            fmGroup.fmGroup +
+            (props.error
               ? fmGroup.hasError
               : '' + props.success
               ? fmGroup.hasSuccess
-              : ''
+              : '')
           }
         >
           <Label label={props.label} />
@@ -145,11 +208,12 @@ const Input = (props) => {
       return (
         <div
           className={
-            fmGroup.fmGroup + props.error
+            fmGroup.fmGroup +
+            (props.error
               ? fmGroup.hasError
               : '' + props.success
               ? fmGroup.hasSuccess
-              : ''
+              : '')
           }
         >
           {props.options.map((option, index) => {
@@ -187,11 +251,12 @@ const Input = (props) => {
           <div
             className="multi-file-upload-holder"
             className={
-              fmGroup.fmGroup + props.error
+              fmGroup.fmGroup +
+              (props.error
                 ? fmGroup.hasError
                 : '' + props.success
                 ? fmGroup.hasSuccess
-                : ''
+                : '')
             }
           >
             <div
@@ -208,19 +273,19 @@ const Input = (props) => {
               {files.map((file, index) => {
                 const fileType = file.type;
                 const fileName = file.name;
-                let fileView = null;
+                let FileView = null;
                 const fileURL =
                   typeof file.file == 'object'
                     ? URL.createObjectURL(file.file)
                     : file.file;
                 if (/.(jpeg|jpg|png|gif|raw)/.test(fileType)) {
-                  fileView = <img src={fileURL} height="auto" width="100%" />;
+                  FileView = <img src={fileURL} height="auto" width="100%" />;
                 } else if (fileType == 'application/pdf' || fileType == 'pdf') {
-                  fileView = (
+                  FileView = (
                     <object data={fileURL} height="auto" width="100%" />
                   );
                 } else {
-                  fileView = (
+                  FileView = (
                     <div
                       style={{
                         backgroundColor: 'rgba(0,0,0,1)',
@@ -236,7 +301,7 @@ const Input = (props) => {
                   );
                 }
                 return (
-                  <div className="col-md-3">
+                  <div className="col-md-3" key={uid + index}>
                     <div className="multiple-file-single-holder">
                       <span
                         onClick={() => {
@@ -248,7 +313,7 @@ const Input = (props) => {
                       >
                         &times;
                       </span>
-                      {fileView}
+                      {FileView}
                     </div>
                   </div>
                 );
@@ -294,15 +359,15 @@ const Input = (props) => {
             ? props.value
             : URL.createObjectURL(props.value)
           : '';
-        let fileView = null;
+        let FileView = null;
         if (typeof props.value == 'object') {
           fileName = props.value ? props.value.name : '';
           if (/.(jpeg|jpg|png|gif|raw)/.test(fileType)) {
-            fileView = <img src={file} height="auto" width="100%" />;
+            FileView = <img src={file} height="auto" width="100%" />;
           } else if (fileType == 'application/pdf') {
-            fileView = <object data={file} height="auto" width="100%" />;
+            FileView = <object data={file} height="auto" width="100%" />;
           } else {
-            fileView = (
+            FileView = (
               <div
                 style={{
                   backgroundColor: 'rgba(0,0,0,1)',
@@ -326,11 +391,11 @@ const Input = (props) => {
             ? fileSpliter[fileSpliter.length - 1]
             : '';
           if (/.(jpeg|jpg|png|gif|raw)/.test(fileType)) {
-            fileView = <img src={file} height="100px" width="200px" />;
+            FileView = <img src={file} height="100px" width="200px" />;
           } else if (fileType == 'pdf') {
-            fileView = <object data={file} height="100px" width="200px" />;
+            FileView = <object data={file} height="100px" width="200px" />;
           } else {
-            fileView = (
+            FileView = (
               <div
                 style={{
                   backgroundColor: 'rgba(0,0,0,1)',
@@ -349,15 +414,16 @@ const Input = (props) => {
         return (
           <div
             className={
-              fmGroup.fmGroup + props.error
+              fmGroup.fmGroup +
+              (props.error
                 ? fmGroup.hasError
                 : '' + props.success
                 ? fmGroup.hasSuccess
-                : ''
+                : '')
             }
           >
             <Label label={props.label} />
-            {props.value ? fileView : null}
+            {props.value ? FileView : null}
             <div className="input-group mb-3">
               <input
                 type="file"
@@ -404,7 +470,12 @@ Input.propTypes = {
   readonly: PropTypes.bool,
   options: PropTypes.array,
   isMulti: PropTypes.bool,
-  file: PropTypes.string | PropTypes.object | PropTypes.array,
+  file: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+  rows: PropTypes.number,
 };
 Label.propTypes = {
   label: PropTypes.string.isRequired,
